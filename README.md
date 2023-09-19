@@ -1,6 +1,6 @@
 # speed_janken
 
-## 以下のページで遊べます
+## デプロイ先
 https://kokekokko0116.github.io/speed_janken/
 
 ## 説明書
