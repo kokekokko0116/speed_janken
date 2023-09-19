@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>相手の手</div>
+    <img id="aite" src="images/gu.jpg" alt="相手の手" width="200" height="200">
+
+    <button id="startButton">カウントダウン開始</button>
+    <div id="counter">20</div>
+    <h2 id="point">0</h2>
+
+    <div>左：チョキ</div>
+    <div>上：グー</div>
+    <div>右：パー</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        let countdown;
+        let timeLeft = 20;
+
+        document.getElementById("startButton").addEventListener("click", function () {
+            // すでにカウントダウンが実行中の場合はクリア
+            if (countdown) {
+                clearInterval(countdown);
+            }
+
+            timeLeft = 20; // カウントダウン初期化
+            document.getElementById("counter").textContent = timeLeft;
+            random();
+
+            // 1秒ごとにカウントダウン処理を実行
+            countdown = setInterval(function () {
+                timeLeft -= 1;
+                document.getElementById("counter").textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown); // カウントダウンが0になったらタイマーをクリア
+                    alert("時間切れ! あなたの得点は" + point + "点です");
+                }
+
+            }, 1000);
+        });
+
+        let aite = Math.floor(Math.random() * 3);
+        // ぐーは0、ちょきは1、ぱーは2
+
+        document.addEventListener("keydown", function (event) {
+            switch (event.keyCode) {
+                case 37: // 左キー
+                    commandLeft();
+                    break;
+                case 39: // 右キー
+                    commandRight();
+                    break;
+                case 38: // 上キー
+                    commandUp();
+                    break;
+                case 40: // 下キー
+                    // 必要であれば下キーにも対応するコマンドを追加
+                    break;
+                default:
+                    // その他のキーの場合
+                    break;
+            }
+        });
+
+        let point = 0;
+
+        // 買った時の処理
+        function win() {
+            point += 3000;
+            document.getElementById("point").textContent = point;
+        }
+        function lose() {
+            point -= 3000;
+            document.getElementById("point").textContent = point;
+        }
+        function aiko() {
+            point += 0;
+            document.getElementById("point").textContent = point;
+        }
+        function random() {
+            aite = Math.floor(Math.random() * 3);
+            if (aite == 0) {
+                document.getElementById("aite").src = "images/gu.jpg";
+            } else if (aite == 1) {
+                document.getElementById("aite").src = "images/choki.jpg";
+            } else {
+                document.getElementById("aite").src = "images/par.jpg";
+            }
+        }
+
+        function commandLeft() {
+            console.log("チョキ");
+            if (aite == 0) {
+                lose();
+            } else if (aite == 1) {
+                aiko();
+            } else {
+                win();
+            }
+            random();
+        }
+
+        function commandRight() {
+            console.log("パー");
+            if (aite == 0) {
+                win();
+            } else if (aite == 1) {
+                lose();
+            } else {
+                aiko();
+            }
+            random();
+        }
+
+        function commandUp() {
+            console.log("ぐー");
+            if (aite == 0) {
+                aiko();
+            } else if (aite == 1) {
+                win();
+            } else {
+                lose();
+            }
+            random();
+        }
+    </script>
+</body>
+
+</html>
